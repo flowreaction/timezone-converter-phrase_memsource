@@ -19,7 +19,7 @@
         <ul
             v-if="searching"
             ref="dropdown"
-            class="max-h-80 overflow-y-scroll rounded-3xl border bg-white px-4 py-2 dark:bg-neutral-300"
+            class="max-h-80 overflow-y-scroll rounded-3xl border bg-white dark:bg-neutral-300"
             :class="{
                 'rounded-t-none': searching,
             }"
@@ -32,7 +32,7 @@
                 @keydown.enter.exact.prevent="
                     addTimezone(result), (search = '')
                 "
-                class="flex h-10 cursor-pointer items-center justify-start gap-3 px-2 transition-all last:border-none hover:rounded hover:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
+                class="flex h-10 cursor-pointer items-center justify-start gap-3 px-4 last:border-none hover:rounded hover:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
             >
                 {{ result.city }}
                 <span class="text-base text-gray-600"
