@@ -8,7 +8,7 @@ import ZoneInput from './components/ZoneInput.vue'
 //import composables
 import { useTimezones } from './composables/useTimezones'
 
-const { timezones, fetchTimezones } = useTimezones()
+const { selectedCities, fetchTimezones } = useTimezones()
 fetchTimezones()
 </script>
 
@@ -27,7 +27,7 @@ fetchTimezones()
         <h1 class="mb-4 text-3xl">Your Timezones</h1>
         <TimeZoneList>
             <TimeZoneListElement
-                v-for="(el, index) in timezones"
+                v-for="(el, index) in selectedCities"
                 :key="index"
                 :city="el"
             ></TimeZoneListElement>
