@@ -16,7 +16,7 @@
                 'rounded-b-none rounded-t-3xl': searching,
             }"
         />
-        <ul
+        <div
             v-if="searching"
             ref="dropdown"
             class="max-h-80 overflow-y-scroll rounded-3xl border bg-white dark:bg-neutral-300"
@@ -24,7 +24,7 @@
                 'rounded-t-none': searching,
             }"
         >
-            <li
+            <div
                 v-for="(result, index) in results"
                 :key="index"
                 ref="listitems"
@@ -38,8 +38,8 @@
                 <span class="text-base text-gray-600"
                     >({{ result.country }})</span
                 >
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -65,21 +65,11 @@ const searching = ref(false)
 
 const search = ref('')
 const results = computed(() => {
-    if (search.value) {
-        return cityMapped.value
-            .filter(
-                (city) =>
-                    city.city
-                        .toLowerCase()
-                        .includes(search.value.toLowerCase()) ||
-                    city.country
-                        .toLowerCase()
-                        .includes(search.value.toLowerCase())
-            )
-            .slice(0, 50)
-    } else {
-        return cityMapped.value
-    }
+    return cityMapped.value.filter(
+        (city) => city.city.toLowerCase().includes(search.value.toLowerCase()) //||
+        // city.country.toLowerCase().includes(search.value.toLowerCase())
+    )
+    // .slice(0, 50)
 })
 
 //keyboard navigation
