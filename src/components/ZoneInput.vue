@@ -66,11 +66,17 @@ const searching = ref(false)
 const search = ref('')
 const results = computed(() => {
     if (search.value) {
-        return cityMapped.value.filter(
-            (city) =>
-                city.city.toLowerCase().includes(search.value.toLowerCase())
-            // || city.country.toLowerCase().includes(search.value.toLowerCase())
-        )
+        return cityMapped.value
+            .filter(
+                (city) =>
+                    city.city
+                        .toLowerCase()
+                        .includes(search.value.toLowerCase()) ||
+                    city.country
+                        .toLowerCase()
+                        .includes(search.value.toLowerCase())
+            )
+            .slice(0, 50)
     } else {
         return cityMapped.value
     }
