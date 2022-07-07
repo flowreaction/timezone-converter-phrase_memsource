@@ -24,6 +24,7 @@ const fetchTimezones = async () => {
             timezone: element.timezone,
         })
     })
+    Object.freeze(cityMapped)
 }
 
 const addTimezone = (inputCity: City) => {
