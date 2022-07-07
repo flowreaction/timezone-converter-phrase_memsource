@@ -63,7 +63,8 @@ import { computed, ref } from 'vue'
 import { City, useTimezones } from '../composables/useTimezones'
 import { onClickOutside } from '@vueuse/core'
 
-const { cityMapped, addTimezone, removeTimezone } = useTimezones()
+const { cityMapped, addTimezone, removeTimezone, filteredCities } =
+    useTimezones()
 
 const dropdown = ref<HTMLElement | null>(null)
 onClickOutside(dropdown, () => (searching.value = false))
@@ -82,16 +83,7 @@ const debounceSearch = (event: Event) => {
     }, 300)
 }
 const results = computed(() => {
-    if (search.value === '') {
-        return cityMapped
-    } else {
-        return cityMapped.filter(
-            (city) =>
-                city.city.toLowerCase().includes(search.value.toLowerCase()) //||
-            // city.country.toLowerCase().includes(search.value.toLowerCase())
-        )
-        // .slice(0, 50)
-    }
+    return filteredCities(search.value)
 })
 
 //keyboard navigation

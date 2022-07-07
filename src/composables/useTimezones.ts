@@ -26,6 +26,16 @@ const fetchTimezones = async () => {
     })
     Object.freeze(cityMapped)
 }
+const filteredCities = (searchQuery: string) => {
+    if (searchQuery === '') {
+        return cityMapped
+    } else {
+        return cityMapped.filter(
+            (city) =>
+                city.city.toLowerCase().includes(searchQuery.toLowerCase()) //||
+        )
+    }
+}
 
 const addTimezone = (inputCity: City) => {
     const index = selectedCities.value.findIndex(
@@ -53,5 +63,6 @@ export function useTimezones() {
         addTimezone,
         removeTimezone,
         fetchTimezones,
+        filteredCities,
     }
 }
