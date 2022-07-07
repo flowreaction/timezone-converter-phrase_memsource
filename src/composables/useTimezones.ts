@@ -1,4 +1,4 @@
-import { reactive, readonly, ref } from 'vue'
+import { readonly, ref } from 'vue'
 
 export interface City {
     city: string
@@ -6,8 +6,11 @@ export interface City {
     timezone: string
 }
 
-const cityMapped = ref<City[]>([])
-const timezoneList = ref<City[]>([])
+// all cities with timezones, these will not mutate after generation so no reactive data needed. => better performance
+const cityMapped: City[] = []
+
+//list of selected cities
+const selectedCities = ref<City[]>([])
 
 const fetchTimezones = async () => {
     const cityMap = await fetch(
@@ -15,7 +18,7 @@ const fetchTimezones = async () => {
     )
     const res = await cityMap.json()
     res.forEach((element: any) => {
-        cityMapped.value.push({
+        cityMapped.push({
             city: element.city,
             country: element.country,
             timezone: element.timezone,
@@ -24,28 +27,28 @@ const fetchTimezones = async () => {
 }
 
 const addTimezone = (inputCity: City) => {
-    const index = timezoneList.value.findIndex(
+    const index = selectedCities.value.findIndex(
         (zone) =>
             zone.city === inputCity.city && zone.country === inputCity.country
     )
     if (index === -1) {
-        timezoneList.value.push(inputCity)
+        selectedCities.value.push(inputCity)
     }
 }
 
 const removeTimezone = (removeCity: City) => {
-    const index = timezoneList.value.findIndex(
+    const index = selectedCities.value.findIndex(
         (zone) => zone.city === removeCity.city
     )
     if (index !== -1) {
-        timezoneList.value.splice(index, 1)
+        selectedCities.value.splice(index, 1)
     }
 }
 
 export function useTimezones() {
     return {
-        timezones: readonly(timezoneList),
-        cityMapped: readonly(cityMapped),
+        selectedCities: selectedCities,
+        cityMapped: cityMapped,
         addTimezone,
         removeTimezone,
         fetchTimezones,
