@@ -68,8 +68,8 @@ const results = computed(() => {
     if (search.value) {
         return cityMapped.value.filter(
             (city) =>
-                city.city.toLowerCase().includes(search.value.toLowerCase()) ||
-                city.country.toLowerCase().includes(search.value.toLowerCase())
+                city.city.toLowerCase().includes(search.value.toLowerCase())
+            // || city.country.toLowerCase().includes(search.value.toLowerCase())
         )
     } else {
         return cityMapped.value
