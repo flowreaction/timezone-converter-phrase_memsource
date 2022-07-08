@@ -1,9 +1,11 @@
 import { readonly, ref, shallowReactive, shallowRef } from 'vue'
 
+let ID = 0
 export interface City {
     city: string
     country: string
     timezone: string
+    id: number
 }
 
 // all cities with timezones, these will not mutate after generation so no reactive data needed. => better performance
@@ -22,19 +24,21 @@ const fetchTimezones = async () => {
             city: element.city,
             country: element.country,
             timezone: element.timezone,
+            id: ID++,
         })
     })
 }
 
 const filteredCities = (searchQuery: string) => {
-    // return cityMapped
     if (searchQuery === '') {
         return []
     } else {
         return cityMapped
             .filter(
                 (city) =>
-                    city.city.toLowerCase().includes(searchQuery.toLowerCase()) //||
+                    city.city
+                        .toLowerCase()
+                        .includes(searchQuery.trim().toLowerCase()) //||
             )
             .slice(0, 10)
     }

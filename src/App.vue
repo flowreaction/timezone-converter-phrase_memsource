@@ -25,14 +25,16 @@ fetchTimezones()
             <TimeInput />
         </section>
         <h1 class="mb-4 text-3xl">Your Timezones</h1>
-        <TimeZoneList>
-            <TimeZoneListElement
-                v-for="(el, index) in selectedCities"
-                :key="index"
-                :city="el"
-            ></TimeZoneListElement>
-        </TimeZoneList>
-        <ZoneInput />
+        <div class="flex flex-col gap-4">
+            <TimeZoneList>
+                <TimeZoneListElement
+                    v-for="(el, index) in selectedCities"
+                    :key="index"
+                    :city="el"
+                ></TimeZoneListElement>
+            </TimeZoneList>
+            <ZoneInput />
+        </div>
     </div>
 </template>
 
