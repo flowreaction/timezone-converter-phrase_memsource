@@ -1,4 +1,4 @@
-import { readonly, ref } from 'vue'
+import { readonly, ref, shallowReactive, shallowRef } from 'vue'
 
 export interface City {
     city: string
@@ -7,7 +7,7 @@ export interface City {
 }
 
 // all cities with timezones, these will not mutate after generation so no reactive data needed. => better performance
-const cityMapped: City[] = []
+const cityMapped = shallowReactive<City[]>([])
 
 //list of selected cities
 const selectedCities = ref<City[]>([])
@@ -29,7 +29,7 @@ const fetchTimezones = async () => {
 const filteredCities = (searchQuery: string) => {
     // return cityMapped
     if (searchQuery === '') {
-        return cityMapped
+        return []
     } else {
         return cityMapped
             .filter(

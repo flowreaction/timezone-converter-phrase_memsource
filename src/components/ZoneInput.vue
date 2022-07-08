@@ -30,6 +30,12 @@
                 'rounded-t-none': searching,
             }"
         >
+            <div
+                v-if="results.length === 0"
+                class="flex h-12 items-center justify-center text-gray-500"
+            >
+                Enter a city name to search.
+            </div>
             <a
                 role="menuitem"
                 tabindex="-1"
@@ -82,7 +88,9 @@ const debounceSearch = (event: Event) => {
     // }, 300)
 }
 const results = computed(() => {
-    return filteredCities(search.value)
+    const res = filteredCities(search.value)
+    console.log(res)
+    return res
 })
 
 //keyboard navigation
