@@ -27,15 +27,17 @@ const fetchTimezones = async () => {
 }
 
 const filteredCities = (searchQuery: string) => {
-    return cityMapped
-    // if (searchQuery === '') {
-    //     return cityMapped
-    // } else {
-    //     return cityMapped.filter(
-    //         (city) =>
-    //             city.city.toLowerCase().includes(searchQuery.toLowerCase()) //||
-    //     )
-    // }
+    // return cityMapped
+    if (searchQuery === '') {
+        return cityMapped
+    } else {
+        return cityMapped
+            .filter(
+                (city) =>
+                    city.city.toLowerCase().includes(searchQuery.toLowerCase()) //||
+            )
+            .slice(0, 10)
+    }
 }
 
 const addTimezone = (inputCity: City) => {

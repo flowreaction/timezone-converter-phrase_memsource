@@ -15,7 +15,6 @@
             class="w-full rounded-full border py-2 px-4 dark:bg-stone-300 dark:text-neutral-900"
             type="search"
             placeholder="City name"
-            :placeholder="currentValue"
             name="zonesearch"
             id="zonesearch"
             @input="debounceSearch"
@@ -23,7 +22,6 @@
                 'rounded-b-none rounded-t-3xl': searching,
             }"
         />
-        <!-- :value="currentValue" -->
         <div
             v-if="searching"
             ref="dropdown"
@@ -35,6 +33,7 @@
             <a
                 role="menuitem"
                 tabindex="-1"
+                href="#"
                 v-for="(result, index) in results"
                 :key="index"
                 :id="`menuitem${index}`"
@@ -44,10 +43,10 @@
                 @keydown.esc.exact="input?.focus()"
                 @mouseover="focusItem(index), (focusedIndex = index)"
                 @mouseleave="blurItem(index), (focusedIndex = -1)"
-                @click="addTimezone(result)"
                 @keydown.enter.exact.prevent="addTimezone(result)"
                 @focus="currentValue = result.city"
-                class="flex h-10 cursor-pointer items-center justify-start gap-3 px-4 ring-0 last:border-none hover:rounded focus:bg-neutral-100 focus:ring-0 dark:text-neutral-900 dark:focus:bg-neutral-200"
+                @click="addTimezone(result)"
+                class="flex h-10 cursor-pointer items-center justify-start gap-3 px-4 ring-0 last:border-none hover:rounded focus:bg-neutral-100 focus:ring-0 focus:ring-offset-0 dark:text-neutral-900 dark:focus:bg-neutral-200"
             >
                 {{ result.city }}
                 <span class="text-base text-gray-600"
@@ -77,10 +76,10 @@ const debounceSearch = (event: Event) => {
     if (!searching.value) searching.value = true
     focusedIndex.value = -1
     currentValue.value = (event.target as HTMLInputElement).value
-    clearTimeout(debouncer.value)
-    debouncer.value = setTimeout(() => {
-        search.value = (event.target as HTMLInputElement).value
-    }, 300)
+    search.value = (event.target as HTMLInputElement).value
+    // clearTimeout(debouncer.value)
+    // debouncer.value = setTimeout(() => {
+    // }, 300)
 }
 const results = computed(() => {
     return filteredCities(search.value)
