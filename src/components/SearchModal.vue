@@ -10,7 +10,7 @@
             >
                 <div
                     ref="modal"
-                    class="relative inset-0 h-screen overflow-hidden bg-neutral-100 p-4 dark:bg-neutral-800 md:left-1/4 md:top-[10%] md:h-fit md:w-1/2 md:rounded-lg md:pb-10"
+                    class="relative inset-0 h-screen overflow-hidden bg-neutral-100 p-4 dark:bg-neutral-800 md:left-1/2 md:top-[10%] md:h-fit md:max-w-3xl md:-translate-x-1/2 md:rounded-lg md:pb-10"
                 >
                     <div class="mb-8 flex items-center justify-between gap-1">
                         <div class="relative w-full">
