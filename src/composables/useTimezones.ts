@@ -1,5 +1,6 @@
 import { readonly, ref, shallowReactive, shallowRef } from 'vue'
 
+// id counter
 let ID = 0
 export interface City {
     city: string
@@ -29,6 +30,7 @@ const fetchTimezones = async () => {
     })
 }
 
+// returns a list of filtered cities with timezones
 const filteredCities = (searchQuery: string) => {
     if (searchQuery === '') {
         return []
@@ -44,6 +46,7 @@ const filteredCities = (searchQuery: string) => {
     }
 }
 
+//add to list of selected cities
 const addTimezone = (inputCity: City) => {
     const index = selectedCities.value.findIndex(
         (zone) =>
@@ -54,6 +57,7 @@ const addTimezone = (inputCity: City) => {
     }
 }
 
+//remove from list of selected cities
 const removeTimezone = (removeCity: City) => {
     const index = selectedCities.value.findIndex(
         (zone) => zone.city === removeCity.city
@@ -63,6 +67,7 @@ const removeTimezone = (removeCity: City) => {
     }
 }
 
+// return functions and state
 export function useTimezones() {
     return {
         selectedCities: selectedCities,

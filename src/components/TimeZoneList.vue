@@ -10,9 +10,10 @@
         <div class="flex h-full flex-col">
             <slot>
                 <div
-                    class="flex justify-center border-stone-500 p-4 text-2xl text-neutral-500 dark:border-b dark:bg-neutral-900"
+                    class="flex justify-center border-stone-500 p-4 text-center text-2xl text-neutral-500 dark:border-b dark:bg-neutral-900"
                 >
-                    No cities have been added yet. Enter a city name to add one.
+                    No cities have been added. <br />
+                    Add one and it will appear here.
                 </div>
             </slot>
         </div>

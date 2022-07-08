@@ -3,7 +3,7 @@ import { reactive } from 'vue'
 import TimeInput from './components/TimeInput.vue'
 import TimeZoneList from './components/TimeZoneList.vue'
 import TimeZoneListElement from './components/TimeZoneListElement.vue'
-import ZoneInput from './components/ZoneInput.vue'
+import SearchModal from './components/SearchModal.vue'
 
 //import composables
 import { useTimezones } from './composables/useTimezones'
@@ -24,7 +24,10 @@ fetchTimezones()
         <section class="mb-8 px-4">
             <TimeInput />
         </section>
-        <h1 class="mb-4 text-3xl">Your Timezones</h1>
+        <div class="flex flex-col justify-between md:flex-row md:items-center">
+            <h1 class="mb-4 text-3xl">Your Timezones</h1>
+            <SearchModal class="" />
+        </div>
         <div class="flex flex-col gap-4">
             <TimeZoneList>
                 <TimeZoneListElement
@@ -33,7 +36,7 @@ fetchTimezones()
                     :city="el"
                 ></TimeZoneListElement>
             </TimeZoneList>
-            <ZoneInput />
+            <!-- <ZoneInput /> -->
         </div>
     </div>
 </template>
