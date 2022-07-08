@@ -146,7 +146,7 @@ onClickOutside(modal, () => closeModal())
 //search controlls
 const clearSearch = () => {
     search.value = ''
-    console.log('clicked')
+    input.value?.focus()
 }
 
 //autofocus on input element
