@@ -1,5 +1,8 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import './assets/css/tailwind.css';
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import App from './App.vue'
+import './assets/css/tailwind.css'
 
-createApp(App).mount('#app');
+const pinia = createPinia()
+
+createApp(App).use(pinia).mount('#app')

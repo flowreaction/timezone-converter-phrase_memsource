@@ -30,8 +30,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { TimeZoneView } from '~types'
 
-type TimeZoneView = 'name' | 'number'
 const tzView = ref<TimeZoneView>('name')
 const toggleTzView = () => {
     switch (tzView.value) {

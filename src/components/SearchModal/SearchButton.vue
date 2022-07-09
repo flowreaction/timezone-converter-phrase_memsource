@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import SearchIcon from './icons/SearchIcon.vue'
+import SearchIcon from '~components/icons/SearchIcon.vue'
 </script>
 
 <style scoped></style>

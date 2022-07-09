@@ -7,7 +7,7 @@
         <div class="flex w-1/3 items-center justify-between">
             <span>{{ getZone }}</span>
             <button
-                @click="removeTimezone(props.city)"
+                @click="cityStore.removeFromSelectedCities(props.city)"
                 class="h-5 rounded bg-red-500 text-center align-text-top hover:bg-red-400"
             >
                 <XIcon class="h-5 text-white" />
@@ -17,19 +17,22 @@
 </template>
 
 <script setup lang="ts">
-import moment from 'moment-timezone'
-import XIcon from './icons/XIcon.vue'
-import { useTimezones, type City } from '../composables/useTimezones'
-import { useSelectedTime } from '../composables/useSelectedTime'
 import { computed } from 'vue'
+import moment from 'moment-timezone'
+import XIcon from '~components/icons/XIcon.vue'
+
+import { useSelectedTime } from '~composables/useSelectedTime'
+import { useCityStore } from '~stores/useCityStore'
+
+import { CityDisplay, TimeZoneView } from '~types'
 
 interface Props {
-    city: City
-    tzView: 'number' | 'name'
+    city: CityDisplay
+    tzView: TimeZoneView
 }
 
 const { workingTime } = useSelectedTime()
-const { removeTimezone } = useTimezones()
+const cityStore = useCityStore()
 
 const calcTime = computed(() => {
     return moment(workingTime.value as moment.MomentInput)

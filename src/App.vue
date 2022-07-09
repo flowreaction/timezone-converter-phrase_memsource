@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import TimeInput from './components/TimeInput.vue'
-import TimeZoneList from './components/TimeZoneList.vue'
-import TimeZoneListElement from './components/TimeZoneListElement.vue'
-import SearchModal from './components/SearchModal.vue'
+import TimeInput from '~components/TimeInput.vue'
+import TimeZoneList from '~components/TimeZoneList/TimeZoneList.vue'
+import TimeZoneListElement from '~components/TimeZoneList/TimeZoneListElement.vue'
+import SearchModal from '~components/SearchModal/SearchModal.vue'
+
+//use Pinia city store
+import { useCityStore } from './stores/useCityStore'
 
 //import composables
-import { useTimezones } from './composables/useTimezones'
+// import { useTimezones } from './composables/useTimezones'
+// const { selectedCities, fetchTimezones } = useTimezones()
+// fetchTimezones()
 
-const { selectedCities, fetchTimezones } = useTimezones()
-fetchTimezones()
+const cityStore = useCityStore()
+cityStore.fetchCities()
 </script>
 
 <template>
@@ -37,7 +42,7 @@ fetchTimezones()
         <div class="flex flex-col gap-4">
             <TimeZoneList v-slot="{ tzview }">
                 <TimeZoneListElement
-                    v-for="(el, index) in selectedCities"
+                    v-for="(el, index) in cityStore.getSelectedCities"
                     :key="index"
                     :tz-view="tzview"
                     :city="el"

@@ -5,7 +5,7 @@
             type="datetime-local"
             name="timeinput"
             id="timeinput"
-            class="w-full rounded border px-4 py-2 shadow dark:bg-neutral-300 dark:text-neutral-900 md:w-1/2"
+            class="form-input w-full rounded border px-4 py-2 text-2xl shadow dark:bg-neutral-300 dark:text-neutral-900 md:w-1/2"
             :value="workingTime.format('YYYY-MM-DDTHH:mm')"
             @input="setUsersTime"
         />
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSelectedTime } from '../composables/useSelectedTime'
+import { useSelectedTime } from '~composables/useSelectedTime'
 
 const {
     resetUsersTime,

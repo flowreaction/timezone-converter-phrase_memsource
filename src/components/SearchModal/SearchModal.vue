@@ -27,7 +27,7 @@
                                     enterSearchedCity(focusedIndex)
                                 "
                                 v-model="search"
-                                class="form-input h-16 w-full rounded-md bg-white py-2 px-6 text-2xl text-neutral-900 placeholder:text-neutral-400 focus:border-green-400 focus:ring-0 dark:bg-neutral-600 dark:text-neutral-200"
+                                class="form-input h-16 w-full rounded-md bg-white py-2 px-6 text-2xl text-neutral-900 placeholder:text-neutral-400 focus:border-green-400 focus:ring-0 dark:bg-neutral-600 dark:text-neutral-200 md:pl-16"
                             />
                             <div
                                 class="absolute right-2 top-1/2 h-full w-12 -translate-y-1/2 cursor-pointer p-2 text-teal-800 dark:text-teal-500"
@@ -35,9 +35,17 @@
                             >
                                 <XIcon class="h-full w-full" />
                             </div>
+                            <div
+                                v-if="breakpoint.isGreater('md')"
+                                class="absolute top-1/2 left-2 -translate-y-1/2"
+                            >
+                                <SearchIcon
+                                    class="h-12 w-10 dark:text-neutral-200"
+                                />
+                            </div>
                         </div>
                         <button
-                            class="h-full w-fit px-2 text-pink-700 dark:text-pink-400"
+                            class="h-full w-fit px-2 text-red-700 dark:text-red-400"
                             @click.prevent="closeModal"
                         >
                             Cancel
@@ -57,18 +65,32 @@
                             v-else
                             class="flex flex-col justify-start gap-1 overflow-y-scroll pb-4"
                         >
-                            <span
-                                v-if="
-                                    recentSearches.length > 0 && search === ''
-                                "
-                                class="text-neutral-500"
-                                >Recent searches</span
-                            >
+                            <div class="flex items-center justify-between">
+                                <span
+                                    v-if="
+                                        cityStore.recentSearches.length > 0 &&
+                                        search === ''
+                                    "
+                                    class="text-neutral-500"
+                                    >Recent searches</span
+                                >
+                                <button
+                                    class="rounded px-2 text-pink-700 hover:bg-neutral-200 dark:text-pink-400/50 dark:hover:bg-neutral-700 dark:hover:text-pink-400"
+                                    @click.prevent="
+                                        cityStore.resetRecentSearches()
+                                    "
+                                >
+                                    Clear recent
+                                </button>
+                            </div>
                             <SearchModelItem
                                 @click="
-                                    breakpoint.isSmaller('md')
-                                        ? closeModal()
-                                        : null
+                                    () => {
+                                        enterSearchedCity(index)
+                                        breakpoint.isSmaller('md')
+                                            ? closeModal()
+                                            : null
+                                    }
                                 "
                                 v-for="(entry, index) in results"
                                 :key="index"
@@ -94,19 +116,22 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, watch, watchEffect } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 import {
     onClickOutside,
     useBreakpoints,
     breakpointsTailwind,
-    useStorage,
 } from '@vueuse/core'
 
-import SearchButton from './SearchButton.vue'
-import SearchModelItem from './SearchModelItem.vue'
-import XIcon from './icons/XIcon.vue'
+import SearchButton from '~components/SearchModal/SearchButton.vue'
+import SearchModelItem from '~components/SearchModal/SearchModelItem.vue'
+import XIcon from '~components/icons/XIcon.vue'
 
-import { City, useTimezones } from '../composables/useTimezones'
+import { useCityStore } from '~stores/useCityStore'
+import { City } from '~types'
+import SearchIcon from '../icons/SearchIcon.vue'
+
+const cityStore = useCityStore()
 
 // define city interface
 interface CityDisplay extends City {
@@ -115,9 +140,6 @@ interface CityDisplay extends City {
         added: boolean
     }
 }
-
-//local storage
-const recentSearches = useStorage<CityDisplay[]>('recentSearches', [])
 
 //getting the current breakpoint
 const breakpoint = useBreakpoints(breakpointsTailwind)
@@ -135,6 +157,7 @@ const closeModal = () => {
     modalIsOpen.value = false
     search.value = ''
 }
+
 // autofocues input element on open of modal
 watch(modalIsOpen, () => {
     if (modal.value && input.value) {
@@ -150,38 +173,15 @@ const clearSearch = () => {
 }
 
 //autofocus on input element
-const focusInput = ref(false)
 watchEffect(() => {
     if (input.value) {
         input.value.focus()
     }
 })
 
-//getting the cities and timezone state
-const { selectedCities, addTimezone, filteredCities } = useTimezones()
-
 //add selected city to local storage and to state
 const enterSearchedCity = (index: number) => {
-    addTimezone(results.value[index])
-    addToRecentSearches(results.value[index])
-}
-
-const addToRecentSearches = (city: CityDisplay) => {
-    const index = recentSearches.value.findIndex(
-        (zone) => zone.city === city.city && zone.country === city.country
-    )
-    if (index === -1) {
-        recentSearches.value.push({
-            display: {
-                added: false,
-                highlighted: false,
-            },
-            city: city.city,
-            country: city.country,
-            timezone: city.timezone,
-            id: city.id,
-        })
-    }
+    cityStore.addToSelectedCities(results.value[index])
 }
 
 //local search state and searching mechanisms
@@ -190,32 +190,16 @@ const results = ref<CityDisplay[]>([])
 
 //get filtered array and map to results with aditional properties
 watchEffect(() => {
-    const state = filteredCities(search.value)
+    const state = cityStore.getFilteredCities(search.value)
     results.value = state.map((city) => ({
         ...city,
         display: {
             highlighted: false,
-            added: selectedCities.value.some(
+            added: cityStore.getSelectedCities.some(
                 (selectedCity) => selectedCity.id === city.id
             ),
         },
     }))
-})
-//set results array to recent searches if search is empty
-watchEffect(() => {
-    if (!search.value) {
-        results.value = recentSearches.value.map((city) => {
-            return {
-                ...city,
-                display: {
-                    highlighted: false,
-                    added: selectedCities.value.some(
-                        (selectedCity) => selectedCity.id === city.id
-                    ),
-                },
-            }
-        })
-    }
 })
 
 //keyboard navigation
