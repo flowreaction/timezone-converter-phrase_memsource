@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex h-12 items-center justify-between px-4 even:bg-neutral-100 dark:even:bg-neutral-800"
+        class="flex h-12 items-center justify-between px-4 even:bg-neutral-100 dark:even:bg-neutral-800/30 hover:dark:bg-neutral-800"
     >
         <span class="w-1/3 grow truncate">{{ props.city.city }}</span>
         <span class="w-1/3 shrink">{{ calcTime }}</span>
@@ -25,6 +25,7 @@ import { computed } from 'vue'
 
 interface Props {
     city: City
+    tzView: 'number' | 'name'
 }
 
 const { workingTime } = useSelectedTime()
@@ -37,7 +38,12 @@ const calcTime = computed(() => {
 })
 
 const getZone = computed(() => {
-    return moment().tz(props.city.timezone).format('z')
+    switch (props.tzView) {
+        case 'number':
+            return moment().tz(props.city.timezone).format('Z')
+        case 'name':
+            return moment().tz(props.city.timezone).format('z')
+    }
 })
 
 const props = defineProps<Props>()

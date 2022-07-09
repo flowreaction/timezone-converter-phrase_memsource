@@ -21,6 +21,12 @@ fetchTimezones()
         >
             Timezone Converter
         </h1>
+        <p class="my-4 max-w-xl">
+            Use this timezone converter to convert your local time or specified
+            time to any other time zone. Simply search for a City to add it to
+            the timzones table and see the converted time. You can switch
+            between the timezone name and it's UTC offset.
+        </p>
         <section class="mb-8 px-4">
             <TimeInput />
         </section>
@@ -29,10 +35,11 @@ fetchTimezones()
             <SearchModal class="" />
         </div>
         <div class="flex flex-col gap-4">
-            <TimeZoneList>
+            <TimeZoneList v-slot="{ tzview }">
                 <TimeZoneListElement
                     v-for="(el, index) in selectedCities"
                     :key="index"
+                    :tz-view="tzview"
                     :city="el"
                 ></TimeZoneListElement>
             </TimeZoneList>
