@@ -1,6 +1,8 @@
 <template>
     <div>
-        <SearchButton @click.prevent="openModal"> Add City</SearchButton>
+        <SearchButton @click.prevent="openModal" data-testid="search-button">
+            Add City</SearchButton
+        >
 
         <Teleport to="body">
             <div
@@ -10,6 +12,7 @@
             >
                 <div
                     ref="modal"
+                    data-testid="modal"
                     class="relative inset-0 h-screen overflow-hidden bg-neutral-100 p-4 dark:bg-neutral-800 md:left-1/2 md:top-[10%] md:h-fit md:max-w-3xl md:-translate-x-1/2 md:rounded-lg md:pb-10"
                 >
                     <div class="mb-8 flex items-center justify-between gap-1">
@@ -19,13 +22,12 @@
                                 ref="input"
                                 id="zonesearch"
                                 name="zonesearch"
+                                data-testid="search-input"
                                 placeholder="City name"
                                 @keydown.up.exact.prevent="focusPrevious(true)"
                                 @keydown.down.exact.prevent="focusNext(true)"
                                 @keydown.esc.exact="closeModal"
-                                @keydown.enter.exact.prevent="
-                                    enterSearchedCity(focusedIndex)
-                                "
+                                @keydown.enter.exact.prevent="enterSearchedCity(focusedIndex)"
                                 v-model="search"
                                 class="form-input h-16 w-full rounded-md bg-white py-2 px-6 text-2xl text-neutral-900 placeholder:text-neutral-400 focus:border-green-400 focus:ring-0 dark:bg-neutral-600 dark:text-neutral-200 md:pl-16"
                             />
@@ -39,9 +41,7 @@
                                 v-if="breakpoint.isGreater('md')"
                                 class="absolute top-1/2 left-2 -translate-y-1/2"
                             >
-                                <SearchIcon
-                                    class="h-12 w-10 dark:text-neutral-200"
-                                />
+                                <SearchIcon class="h-12 w-10 dark:text-neutral-200" />
                             </div>
                         </div>
                         <button
@@ -51,13 +51,9 @@
                             Cancel
                         </button>
                     </div>
-                    <div
-                        class="box-border h-full overflow-y-scroll md:h-[60vh]"
-                    >
+                    <div class="box-border h-full overflow-y-scroll md:h-[60vh]">
                         <div v-if="results.length === 0">
-                            <p
-                                class="flex h-64 items-center justify-center text-gray-500"
-                            >
+                            <p class="flex h-64 items-center justify-center text-gray-500">
                                 No recent searches
                             </p>
                         </div>
@@ -65,31 +61,23 @@
                             v-else
                             class="flex flex-col justify-start gap-1 overflow-y-scroll pb-4"
                         >
-                            <div class="flex items-center justify-between">
-                                <span
-                                    v-if="
-                                        cityStore.recentSearches.length > 0 &&
-                                        search === ''
-                                    "
-                                    class="text-neutral-500"
-                                    >Recent searches</span
-                                >
+                            <div
+                                class="flex items-center justify-between"
+                                v-if="cityStore.recentSearches.length > 0 && search === ''"
+                            >
+                                <span class="text-neutral-500">Recent searches</span>
                                 <button
                                     class="rounded px-2 text-pink-700 hover:bg-neutral-200 dark:text-pink-400/50 dark:hover:bg-neutral-700 dark:hover:text-pink-400"
-                                    @click.prevent="
-                                        cityStore.resetRecentSearches()
-                                    "
+                                    @click.prevent="cityStore.resetRecentSearches()"
                                 >
                                     Clear recent
                                 </button>
                             </div>
-                            <SearchModelItem
+                            <SearchModalItem
                                 @click="
                                     () => {
                                         enterSearchedCity(index)
-                                        breakpoint.isSmaller('md')
-                                            ? closeModal()
-                                            : null
+                                        breakpoint.isSmaller('md') ? closeModal() : null
                                     }
                                 "
                                 v-for="(entry, index) in results"
@@ -117,14 +105,10 @@
 
 <script setup lang="ts">
 import { ref, watch, watchEffect } from 'vue'
-import {
-    onClickOutside,
-    useBreakpoints,
-    breakpointsTailwind,
-} from '@vueuse/core'
+import { onClickOutside, useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 
 import SearchButton from '~components/SearchModal/SearchButton.vue'
-import SearchModelItem from '~components/SearchModal/SearchModelItem.vue'
+import SearchModalItem from '~components/SearchModal/SearchModalItem.vue'
 import XIcon from '~components/icons/XIcon.vue'
 
 import { useCityStore } from '~stores/useCityStore'
@@ -195,9 +179,7 @@ watchEffect(() => {
         ...city,
         display: {
             highlighted: false,
-            added: cityStore.getSelectedCities.some(
-                (selectedCity) => selectedCity.id === city.id
-            ),
+            added: cityStore.getSelectedCities.some((selectedCity) => selectedCity.id === city.id),
         },
     }))
 })

@@ -2,13 +2,21 @@ import { defineStore } from 'pinia'
 import { City, CityDisplay } from '../types'
 import { useStorage } from '@vueuse/core'
 
+function* idGenerator() {
+    let id = 0
+    while (true) {
+        yield id++
+    }
+}
+const generateID = idGenerator()
+const nextID = () => generateID.next().value as number
+
 export const useCityStore = defineStore('cityStore', {
     state: () => {
         return {
             selectedCities: [] as CityDisplay[],
             cities: useStorage<CityDisplay[]>('cities', []),
             recentSearches: useStorage<CityDisplay[]>('recentSearches', []),
-            id: 0,
         }
     },
     getters: {
@@ -20,9 +28,7 @@ export const useCityStore = defineStore('cityStore', {
             } else {
                 return state.cities
                     .filter((city) =>
-                        city.city
-                            .toLowerCase()
-                            .includes(searchQuery.trim().toLowerCase())
+                        city.city.toLowerCase().includes(searchQuery.trim().toLowerCase())
                     )
                     .slice(0, 10)
             }
@@ -32,6 +38,9 @@ export const useCityStore = defineStore('cityStore', {
         async fetchCities() {
             //check if cities in local storage, if not fetch from source
             if (this.cities.length !== 0) return
+            else this.fetchCitiesFromSource()
+        },
+        async fetchCitiesFromSource() {
             const cityMap = await fetch(
                 'https://raw.githubusercontent.com/kevinroberts/city-timezones/master/data/cityMap.json'
             )
@@ -41,7 +50,7 @@ export const useCityStore = defineStore('cityStore', {
                     city: element.city,
                     country: element.country,
                     timezone: element.timezone,
-                    id: this.id++,
+                    id: nextID(),
                     display: {
                         highlighted: false,
                         added: false,
@@ -51,9 +60,7 @@ export const useCityStore = defineStore('cityStore', {
         },
         addToRecentSearches(inputCity: CityDisplay) {
             const index = this.recentSearches.findIndex(
-                (zone) =>
-                    zone.city === inputCity.city &&
-                    zone.country === inputCity.country
+                (zone) => zone.city === inputCity.city && zone.country === inputCity.country
             )
             if (index === -1) {
                 this.recentSearches.push({
@@ -70,16 +77,13 @@ export const useCityStore = defineStore('cityStore', {
         },
         addToSelectedCities(inputCity: CityDisplay) {
             const index = this.selectedCities.findIndex(
-                (zone) =>
-                    zone.city === inputCity.city &&
-                    zone.country === inputCity.country
+                (zone) => zone.city === inputCity.city && zone.country === inputCity.country
             )
             if (index === -1) {
                 this.selectedCities.push(inputCity)
             }
             this.addToRecentSearches(inputCity)
         },
-
         resetRecentSearches() {
             this.recentSearches = []
         },

@@ -2,11 +2,14 @@
     <div
         class="flex h-12 items-center justify-between px-4 even:bg-neutral-100 dark:even:bg-neutral-800/30 hover:dark:bg-neutral-800"
     >
-        <span class="w-1/3 grow truncate">{{ props.city.city }}</span>
-        <span class="w-1/3 shrink">{{ calcTime }}</span>
+        <span data-testid="city" class="w-1/3 grow truncate">{{
+            props.city.city
+        }}</span>
+        <span data-testid="time" class="w-1/3 shrink">{{ calcTime }}</span>
         <div class="flex w-1/3 items-center justify-between">
-            <span>{{ getZone }}</span>
+            <span data-testid="timezone">{{ getZone }}</span>
             <button
+                data-testid="remove-button"
                 @click="cityStore.removeFromSelectedCities(props.city)"
                 class="h-5 rounded bg-red-500 text-center align-text-top hover:bg-red-400"
             >

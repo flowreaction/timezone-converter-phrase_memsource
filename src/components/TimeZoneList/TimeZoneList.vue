@@ -9,6 +9,7 @@
                 TZ
                 <button
                     @click="toggleTzView"
+                    data-testid="toggle-tz-view"
                     class="w-16 cursor-pointer px-1 text-base text-teal-500"
                 >
                     {{ tzView === 'number' ? 'offset' : 'name' }}
@@ -18,6 +19,7 @@
         <div class="flex h-full flex-col">
             <slot :tzview="tzView">
                 <div
+                    data-testid="timezonelist-defaultslot"
                     class="flex justify-center border-stone-500 p-4 text-center text-2xl text-neutral-500 dark:border-b dark:bg-neutral-900"
                 >
                     No cities have been added. <br />

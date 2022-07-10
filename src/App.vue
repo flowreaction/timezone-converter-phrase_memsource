@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import TimeInput from '~components/TimeInput.vue'
+import TimeInput from '~components/TimeInput/TimeInput.vue'
 import TimeZoneList from '~components/TimeZoneList/TimeZoneList.vue'
 import TimeZoneListElement from '~components/TimeZoneList/TimeZoneListElement.vue'
 import SearchModal from '~components/SearchModal/SearchModal.vue'
 
 //use Pinia city store
 import { useCityStore } from './stores/useCityStore'
-
-//import composables
-// import { useTimezones } from './composables/useTimezones'
-// const { selectedCities, fetchTimezones } = useTimezones()
-// fetchTimezones()
-
 const cityStore = useCityStore()
 cityStore.fetchCities()
 </script>

@@ -14,10 +14,10 @@
                 'max-w-[75%]': props.entry.display.highlighted,
             }"
         >
-            <div class="whitespace-nowrap">
+            <div class="whitespace-nowrap" data-testid="city">
                 {{ props.entry.city }}
             </div>
-            <span class="truncate text-sm text-gray-400">
+            <span class="truncate text-sm text-gray-400" data-testid="country">
                 ({{ props.entry.country }})
             </span>
         </div>
@@ -29,10 +29,11 @@
                     props.entry.display.highlighted,
             }"
         >
-            <CheckIcon class="h-full w-full" />
+            <CheckIcon class="h-full w-full" data-testid="check-icon" />
         </span>
         <span
             v-else-if="props.entry.display.highlighted"
+            data-testid="add-icon"
             class="flex-none whitespace-nowrap text-teal-800 dark:text-neutral-300"
             >⏎ Add</span
         >

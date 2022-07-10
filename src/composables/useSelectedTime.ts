@@ -25,14 +25,21 @@ const workingTime = computed(() => {
 
 /**
  * handling the time input logic for the user
+ *
  */
 export function useSelectedTime() {
-    //setting and resetting usersTime
+    /**
+     * setting usersTime
+     * @param e event object from input element
+     */
     const setUsersTime = (e: Event) => {
         const inputElement = e.target as HTMLInputElement
         const datestring = inputElement.value
         usersTime.value = moment(datestring)
     }
+    /**
+     * resetting usersTime
+     */
     const resetUsersTime = () => (usersTime.value = null)
 
     return {
