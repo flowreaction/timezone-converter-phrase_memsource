@@ -32,4 +32,35 @@ describe('CityStore', () => {
 
         expect(store.cities).toHaveLength(mockCities.length)
     })
+
+    it('adds a city to the selected cities array', () => {
+        const store = useCityStore()
+        store.selectedCities = []
+        store.cities = mockCities
+
+        store.addToSelectedCities(mockCities[0])
+
+        expect(store.selectedCities).toHaveLength(1)
+    })
+    it('removes city from selected cities array', () => {
+        const store = useCityStore()
+        store.selectedCities[0] = mockCities[0]
+        console.log(store.selectedCities)
+
+        expect(store.selectedCities).toHaveLength(1)
+
+        store.removeFromSelectedCities(mockCities[0])
+
+        expect(store.selectedCities).toHaveLength(0)
+    })
+    it('cleares the recent searches', () => {
+        const store = useCityStore()
+        store.recentSearches = mockCities
+
+        expect(store.recentSearches).toHaveLength(mockCities.length)
+
+        store.resetRecentSearches()
+
+        expect(store.recentSearches).toHaveLength(0)
+    })
 })
