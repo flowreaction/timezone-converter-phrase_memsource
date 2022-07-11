@@ -43,8 +43,7 @@ const toggleTzView = () => {
         case 'number':
             tzView.value = 'name'
             break
-        default:
-            break
+        // no default can ever happen here
     }
 }
 </script>

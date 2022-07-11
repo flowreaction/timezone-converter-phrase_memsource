@@ -1,3 +1,8 @@
+/**
+ * @vitest-environment jsdom
+ */
+// Happy dom had some problems with the disabled attribute.
+
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import TimeInput from './TimeInput.vue'
@@ -38,11 +43,11 @@ describe('TimeInput ', () => {
         const wrapper = mount(TimeInput)
         const button = await wrapper.get('[data-testid="resetbutton"]')
 
-        expect((button.element as HTMLButtonElement).disabled).toBeUndefined()
+        expect((button.element as HTMLButtonElement).disabled).toBe(false)
     })
 
-    // currently failing test as button click is not triggering
-    it.skip('displays the system time on reset', async () => {
+    // this test fail with happy dom
+    it('displays the system time on reset', async () => {
         // vi.setSystemTime(new Date(systemDate))
 
         const wrapper = mount(TimeInput)
@@ -56,8 +61,9 @@ describe('TimeInput ', () => {
         console.log((input.element as HTMLInputElement).value)
         expect((input.element as HTMLInputElement).value).toBe(systemDateString)
     })
-    //failing as result of button not being clicked
-    it.skip('renders the button as disabled', () => {
+
+    // this test fail with happy dom
+    it('renders the button as disabled', () => {
         const wrapper = mount(TimeInput)
         const button = wrapper.get('[data-testid="resetbutton"]')
 
