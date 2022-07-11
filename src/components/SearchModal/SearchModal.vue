@@ -6,6 +6,7 @@
 
         <Teleport to="body">
             <div
+                data-testid="modal-backdrop"
                 v-if="modalIsOpen"
                 id="modalbackdrop"
                 class="absolute inset-0 z-10 bg-neutral-500/50 backdrop-blur-sm"
@@ -45,6 +46,7 @@
                             </div>
                         </div>
                         <button
+                            data-testid="close-modal-button"
                             class="h-full w-fit px-2 text-red-700 dark:text-red-400"
                             @click.prevent="closeModal"
                         >
@@ -60,6 +62,7 @@
                         <div
                             v-else
                             class="flex flex-col justify-start gap-1 overflow-y-scroll pb-4"
+                            data-testid="search-results"
                         >
                             <div
                                 class="flex items-center justify-between"
@@ -74,6 +77,7 @@
                                 </button>
                             </div>
                             <SearchModalItem
+                                data-testid="single-search-result"
                                 @click="
                                     () => {
                                         enterSearchedCity(index)

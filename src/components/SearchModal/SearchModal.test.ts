@@ -33,20 +33,33 @@ describe('SearchModal search features', () => {
         expect(wrapper.find('[data-testid="modal"]').exists()).toBe(true)
     })
 
-    it.todo('focuses the input field on modal open', () => {
-        wrapper.get('[data]')
+    it('renders "No recent searches" on initial render with empty recent searches', async () => {
+        expect(wrapper.html()).toContain('No recent searches')
     })
 
-    it.todo('renders "No recent searches" on initial render with empty recent searches')
-    it.todo('renders the search results on input change')
-    it.todo('adds selected city to recent/selected cities on click')
-    it.todo('closes modal on click outside')
-    it.todo('closes modal on click on cancel button')
-})
+    it('renders the search results on input change', async () => {
+        // const results = wrapper.get('[data-testid="search-results"]')
+        const input = wrapper.get('[data-testid="search-input"]')
 
-describe('Search Modal keypress navigation features', () => {
-    it.todo('selects first result on default')
-    it.todo('selects next result on keypress down')
-    it.todo('selects previous result on keypress up')
-    it.todo('closes modal on esc keypress')
+        await input.setValue('London')
+        expect(wrapper.find('[data-testid="search-results"]').exists()).toBe(true)
+        expect(wrapper.find('[data-testid="search-results"]').text()).toContain('London')
+    })
+
+    it('adds selected city to recent/selected cities on click', async () => {
+        const result = wrapper.find('[data-testid="single-search-result"]')
+
+        expect(result.exists()).toBe(true)
+        await result.trigger('click')
+
+        expect(store.addToSelectedCities).toHaveBeenCalled()
+    })
+
+    it('closes modal on click on cancel button', async () => {
+        const cancelButton = wrapper.get('[data-testid="close-modal-button"]')
+
+        await cancelButton.trigger('click')
+
+        expect(wrapper.find('[data-testid="modal"]').exists()).toBe(false)
+    })
 })

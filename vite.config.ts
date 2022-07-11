@@ -9,9 +9,9 @@ export default defineConfig({
     plugins: [vue()],
     test: {
         globals: true,
-        environment: 'jsdom',
+        environment: 'happy-dom',
         deps: {
-            inline: ['@vueuse/core', 'moment', 'moment-timezone'],
+            inline: ['@vueuse/core', '@vue', 'moment', 'moment-timezone'],
         },
     },
     resolve: {

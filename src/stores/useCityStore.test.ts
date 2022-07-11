@@ -19,9 +19,7 @@ describe('CityStore', () => {
     it('fetches the cities from the source and stores them in cities array', async () => {
         const store = useCityStore()
         expect(store.cities).toHaveLength(0)
-        const spy = vi
-            .spyOn(store, 'fetchCitiesFromSource')
-            .mockImplementation(async () => {})
+        const spy = vi.spyOn(store, 'fetchCitiesFromSource').mockImplementation(async () => {})
 
         await store.fetchCities()
 
@@ -32,7 +30,6 @@ describe('CityStore', () => {
         const store = useCityStore()
         store.cities = mockCities
 
-        console.log(store.cities)
         expect(store.cities).toHaveLength(mockCities.length)
     })
 })
